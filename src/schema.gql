@@ -1,0 +1,39 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Float!
+  email: String!
+  password: String!
+  biometricKey: String!
+}
+
+type AuthResponse {
+  user: User!
+  token: String!
+}
+
+type RegisterResponse {
+  user: User!
+}
+
+type Query {
+  getUsers: [User!]!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): RegisterResponse!
+  login(loginUserInput: LoginUserInput!): AuthResponse!
+  biometricLogin(biometricKey: String!): AuthResponse!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
