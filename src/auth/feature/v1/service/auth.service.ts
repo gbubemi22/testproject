@@ -9,11 +9,13 @@ import BcryptUtil from 'src/utils/bcrypt.util';
 import AuthRepository from '../repository/auth.repository';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  BiometricLoginUserInput,
   CreateUserInput,
   LoginUserInput,
 } from 'src/graphql/user/dto/create-user.input';
 import { RegisterResponse } from 'src/graphql/user/model/register-response.dto';
 import { JwtService } from '@nestjs/jwt';
+import { jwtConfig } from 'src/config';
 
 @Injectable()
 export class AuthService {
@@ -90,7 +92,10 @@ export class AuthService {
         email: user.email,
       };
 
-      const token = this.jwtService.sign(jwtPayload);
+      const token = this.jwtService.sign(jwtPayload, {
+        expiresIn: jwtConfig.expiresIn,
+        secret: jwtConfig.secret,
+      });
 
       const sessionPayload = {
         id: user.id,
@@ -108,16 +113,28 @@ export class AuthService {
     }
   }
 
-  async biometricLogin(biometricKey: string) {
+  async biometricLogin(payload: BiometricLoginUserInput) {
+    const { biometricKey } = payload;
     const user = await this.prisma.user.findFirst({ where: { biometricKey } });
 
     if (!user) throw new UnauthorizedException('Invalid biometric key');
 
-    const jwtPayload = { id: user.id, email: user.email };
-    const token = this.jwtService.sign(jwtPayload);
+    const jwtPayload = {
+      id: user.id,
+      email: user.email,
+    };
 
-    const sessionPayload = { id: user.id, email: user.email };
-    await this.authRepository.createSession(user.id, sessionPayload);
+    const token = this.jwtService.sign(jwtPayload, {
+      expiresIn: jwtConfig.expiresIn,
+      secret: jwtConfig.secret,
+    });
+
+    const sessionPayload = {
+      id: user.id,
+      email: user.email,
+    };
+
+    this.authRepository.createSession(user.id, sessionPayload);
 
     return { user, token };
   }

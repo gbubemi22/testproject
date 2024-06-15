@@ -11,7 +11,7 @@ export class CreateUserInput {
 
   @Field()
   @IsNotEmpty({ message: 'Password is required' })
-  @MinLength(8, { message: 'Password must be at least 6 characters long' })
+  @MinLength(8, { message: 'Password must be at least 8 characters long' })
   password: string;
 }
 
@@ -33,4 +33,11 @@ export class AuthResponse {
 
   @Field()
   token: string;
+}
+
+@InputType()
+export class BiometricLoginUserInput {
+  @Field()
+  @IsString()
+  biometricKey: string;
 }

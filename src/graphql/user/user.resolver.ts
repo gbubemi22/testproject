@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma_service/prisma.service';
 import { User, User as UserModel } from './model/user.model';
 import {
   AuthResponse,
+  BiometricLoginUserInput,
   CreateUserInput,
   LoginUserInput,
 } from './dto/create-user.input';
@@ -42,8 +43,9 @@ export class UserResolver {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Mutation((returns) => AuthResponse)
   async biometricLogin(
-    @Args('biometricKey') biometricKey: string,
+    @Args('biometricLoginUserInput')
+    biometricLoginUserInput: BiometricLoginUserInput,
   ): Promise<AuthResponse> {
-    return this.authService.biometricLogin(biometricKey);
+    return this.authService.biometricLogin(biometricLoginUserInput);
   }
 }

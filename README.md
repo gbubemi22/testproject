@@ -55,7 +55,6 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-
 ### Using  Database
 
 1. **PostgreSQL** : Ensure PostgreSQL is installed and running.
@@ -66,14 +65,11 @@ $ npm run test:cov
 1. Pull the database image and start the container:
 2. docker-compose up -d
 
-
-
 ## GraphQL Playground
 
 The GraphQL Playground is accessible at:
 
 [http://localhost:3000/graphql](http://localhost:3000/graphql)
-
 
 mutation {
   createUser(createUserInput: { email: "slimnfine22+1@gmail.com", password: "Webnet2$" }) {
@@ -98,9 +94,16 @@ mutation {
 }
 
 
+mutation {
+  biometricLogin(biometricLoginUserInput: { biometricKey: "0960623b-aae3-4560-b74a-156abc655e70" }) {
+    user {
+      id
+      email
 
-
-
+    }
+    token
+  }
+}
 
 ## Project Structure
 

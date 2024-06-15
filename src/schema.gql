@@ -25,7 +25,7 @@ type Query {
 type Mutation {
   createUser(createUserInput: CreateUserInput!): RegisterResponse!
   login(loginUserInput: LoginUserInput!): AuthResponse!
-  biometricLogin(biometricKey: String!): AuthResponse!
+  biometricLogin(biometricLoginUserInput: BiometricLoginUserInput!): AuthResponse!
 }
 
 input CreateUserInput {
@@ -36,4 +36,8 @@ input CreateUserInput {
 input LoginUserInput {
   email: String!
   password: String!
+}
+
+input BiometricLoginUserInput {
+  biometricKey: String!
 }
